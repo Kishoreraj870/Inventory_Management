@@ -31,8 +31,18 @@ def add_product():
 
 @pro.route('/product',methods=['GET'])
 def get_product():
-    items = Product.product_list()
-    return jsonify(items),200
+    try:
+        # Fetch items from the database
+        items = list(Product.product_list())
+        
+        # Convert ObjectId to string for each item
+        for item in items:
+            item['_id'] = str(item['_id'])
+        
+        return jsonify(items), 200  # Return the modified items as JSON
+    except Exception as e:
+        print(f"Error: {e}")
+        return jsonify({"error": "An error occurred while fetching products"}), 500
  
  
 @supplier_route.route('/supplier',methods=['POST'])
@@ -43,8 +53,14 @@ def add_supplier():
 
 @supplier_route.route('/supplier',methods=['GET'])
 def get_supplier():
-    items = Supplier.get_all_suppliers()
-    return jsonify(items),200   
+    try:    
+        items = list(Supplier.get_all_suppliers())
+        for item in items:
+            item['_id'] = str(item['_id'])
+        return jsonify(items),200   
+    except Exception as e:
+        print(f"Error:{e}")
+        return jsonify({"error": "An error occurred while fetching products"}), 500
 
 
 @sale_route.route('/sale',methods=['POST'])
@@ -55,5 +71,12 @@ def add_sale():
 
 @sale_route.route('/sale',methods=['GET'])
 def get_sale():
-    items = Sale.get_all_sales()
-    return jsonify(items),200   
+    try:
+        items = list(Sale.get_all_sales())
+        for item in items:
+            item['_id'] = str(item['_id'])
+            item['product_id'] = str(item['product_id']) 
+        return jsonify(items),200   
+    except Exception as e:
+        print(f"Error:{e}")
+        return jsonify({"error":"An error occured while fetchoing sale"}),500

@@ -73,6 +73,7 @@ class Supplier:
 class Sale:
     @staticmethod
     def record_sale(data):
+        quantity = int(data['quantity']) 
         sale = {
             'product_id': ObjectId(data['product_id']),  # Link to Product
             'quantity': data['quantity'],               # Quantity sold
@@ -83,7 +84,7 @@ class Sale:
         # Reduce quantity from Inventory
         db.inventory.update_one(
             {'product_id': sale['product_id']},
-            {'$inc': {'quantity': -sale['quantity']}}
+            {'$inc': {'quantity': -quantity}}
         )
         
         result = sale_db.sales_data.insert_one(sale)
