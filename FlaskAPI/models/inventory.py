@@ -58,9 +58,7 @@ class Inventory:
                 'supplier': item.get('supplier', '')
             }
         else:
-            raise ValueError("Item not found")
-    
-    
+            raise ValueError("Item not found") 
     
     @staticmethod
     def edit_item(item_id,data):
@@ -88,7 +86,6 @@ class Inventory:
             'quantity': item['quantity'],
             'reorder_threshold': Inventory.REORDER_THRESHOLD
         } for item in items_below_threshold]   
-        
          
 class Product:
     @staticmethod
@@ -121,7 +118,6 @@ class Product:
             }
         else:
             raise ValueError("Product not found")
-
 
     @staticmethod
     def edit_product(product_id, data):
@@ -261,4 +257,3 @@ class Sale:
         result = sale_db.sales_data.delete_one({'_id': ObjectId(sale_id)})
         if result.deleted_count == 0:
             raise ValueError("Sale not found or already deleted.")
-
