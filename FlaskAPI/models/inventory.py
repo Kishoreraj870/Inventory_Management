@@ -257,3 +257,19 @@ class Sale:
         result = sale_db.sales_data.delete_one({'_id': ObjectId(sale_id)})
         if result.deleted_count == 0:
             raise ValueError("Sale not found or already deleted.")
+        
+    @staticmethod
+    def generate_bill(sale_id):
+        sale = sale_db.sales_data.find_one({'_id': ObjectId(sale_id)})
+        if not sale:
+            raise ValueError("Sale not found")
+
+        # Here you can format the bill as needed
+        bill = {
+            'product_id': str(sale['product_id']),
+            'quantity': sale['quantity'],
+            'sale_price': sale['sale_price'],
+            'total_price': int(sale['quantity']) * int(sale['sale_price']),
+            'sale_date': sale['sale_date'],
+        }
+        return bill

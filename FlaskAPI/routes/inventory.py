@@ -189,3 +189,12 @@ def delete_sale(id):
         return jsonify({"message": "Sale deleted"}), 200
     except ValueError as e:
         return jsonify({"error": str(e)}), 400
+
+@sale_route.route('/sale/bill/<id>', methods=['GET'])
+def get_bill(id):
+    try:
+        bill = Sale.generate_bill(id)
+        return jsonify(bill), 200
+    except ValueError as e:
+        return jsonify({'error': str(e)}), 400
+
